@@ -6,11 +6,14 @@ public class PointGenerator {
     private List<Point> points;
     private final int NUM_TESTS = 5;
 
-
     public static void main(String[] args){
         // This is the number of points for each red and green
-        PointGenerator main = new PointGenerator(1);
-        System.out.println(main.toString() );
+        for(int i = 1; i <= 10; i++){
+            System.out.println("Set " + i);
+            PointGenerator main = new PointGenerator(i);
+            main.printByColor(false);
+            System.out.println();
+        }
     }
 
 
@@ -31,13 +34,16 @@ public class PointGenerator {
         }
     }
 
+    public PointGenerator(List<Point> points){
+        this.points = points;
+    }
 
-    @Override
-    public String toString(){
+    // This is a toString that allows for a randomized time
+    public String toString(boolean includeTime){
         StringBuilder stringBuilder = new StringBuilder();
         stringBuilder.append('[');
         for(Point point : this.points){
-            stringBuilder.append(point.toString() );
+            stringBuilder.append(point.toString(includeTime) );
             stringBuilder.append(',');
         }
         stringBuilder.deleteCharAt(stringBuilder.length() - 1);
@@ -45,5 +51,18 @@ public class PointGenerator {
         return stringBuilder.toString();
     }
 
+    @Override
+    public String toString(){
+        return this.toString(false);
+    }
+
+    public void printByColor(boolean includeTime){
+        System.out.print("c_{ir}\\left(");
+        System.out.print( (new PointGenerator(this.points.subList(0, this.points.size() / 2) ) ).toString(includeTime) );
+        System.out.println("\\right)\\le0");
+        System.out.print("c_{ir}\\left(");
+        System.out.print( (new PointGenerator(this.points.subList(this.points.size() / 2, this.points.size() ) ) ).toString(includeTime) );
+        System.out.println("\\right)\\le0");
+    }
 
 }
